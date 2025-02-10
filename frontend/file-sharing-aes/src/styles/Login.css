@@ -1,0 +1,148 @@
+/* General Theme */
+:root {
+    --primary-color: #1E3A8A; /* Royal Blue */
+    --secondary-color: #F8FAFC; /* Light Gray */
+    --accent-color: #FFD700; /* Gold */
+    --text-color: #111827; /* Dark Gray */
+    --button-hover: #172554; /* Darker Royal Blue */
+    --transition-speed: 0.3s;
+}
+
+/* Login Container */
+.login-container {
+    max-width: 420px;
+    margin: 60px auto;
+    padding: 35px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform var(--transition-speed) ease-in-out;
+}
+
+.login-container:hover {
+    transform: translateY(-5px);
+}
+
+/* Login Title with Icon */
+h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.icon-title {
+    color: var(--accent-color);
+}
+
+/* Input Fields */
+.input-group {
+    margin: 12px 0;
+    text-align: left;
+}
+
+.input-group label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Medium-Sized Input Fields */
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 0.95rem;
+    border: 2px solid var(--primary-color);
+    border-radius: 6px;
+    outline: none;
+    transition: border-color var(--transition-speed);
+}
+
+.input-group input:focus {
+    border-color: var(--button-hover);
+}
+
+/* Lucide Icons */
+.icon {
+    color: var(--accent-color);
+}
+
+/* Login Button */
+.login-button {
+    width: 100%;
+    padding: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background var(--transition-speed), transform var(--transition-speed);
+}
+
+.login-button:hover {
+    background: var(--button-hover);
+    transform: translateY(-3px);
+}
+
+/* Extra Links */
+.extra-links {
+    margin-top: 15px;
+    font-size: 0.85rem;
+    color: var(--text-color);
+}
+
+.extra-links a {
+    color: var(--primary-color);
+    font-weight: bold;
+    text-decoration: none;
+    transition: color var(--transition-speed);
+    margin: 0 5px;
+}
+
+.extra-links a:hover {
+    color: var(--button-hover);
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .login-container {
+        max-width: 85%;
+        padding: 25px;
+    }
+
+    h2 {
+        font-size: 1.4rem;
+    }
+
+    .input-group label {
+        font-size: 0.9rem;
+    }
+
+    .input-group input {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+
+    .login-button {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    .extra-links {
+        font-size: 0.8rem;
+    }
+}
