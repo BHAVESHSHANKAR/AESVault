@@ -116,7 +116,7 @@ const Dashboard = () => {
         }
 
         try {
-            const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/auth/received-files/${receiverId}`);
+            const response = await axios.get(`https://aes-vault-apis.vercel.app/api/auth/received-files/${receiverId}`);
 
             console.log("API Response:", response.data); // Debugging
 
@@ -143,7 +143,7 @@ const Dashboard = () => {
 
     const handleDownload = async (fileId) => {
         try {
-            window.open(`${import.meta.env.VITE_API_URL}/api/auth/download/${fileId}`, "_blank");
+            window.open(`https://aes-vault-apis.vercel.app/api/auth/download/${fileId}`, "_blank");
         } catch (error) {
             console.error("Download failed", error);
         }
@@ -151,7 +151,7 @@ const Dashboard = () => {
 
     const handleDelete = async (fileId) => {
         try {
-            const response = await axios.delete(`${import.meta.env.VITE_API_URL}/api/auth/delete/${fileId}`);
+            const response = await axios.delete(`https://aes-vault-apis.vercel.app/api/auth/delete/${fileId}`);
             if (response.status === 200) {
                 setFiles(files.filter(file => file._id !== fileId)); // Remove from UI
                 setMessage("✅ File deleted successfully.");
