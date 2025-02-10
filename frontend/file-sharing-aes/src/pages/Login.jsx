@@ -55,7 +55,7 @@ const Login = () => {
 
                
                 <div className="extra-links">
-                    <a href="/forgot-password">Forgot Password?</a> | 
+                    {/* <a href="/forgot-password">Forgot Password?</a> |  */}
                     <a href="/signup"> Create an Account</a>
                 </div>
             </form>
