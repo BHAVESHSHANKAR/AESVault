@@ -7,7 +7,12 @@ const authRoutes = require("./routes/auth");
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+// app.use(cors());
+app.use(cors({
+    origin: "https://aes-vault.vercel.app", // ✅ Allow frontend URL
+    methods: ["GET", "POST", "PUT", "DELETE"], // ✅ Allow required methods
+    credentials: true // ✅ Allow cookies & authentication headers
+}));
 
 
 app.use("/api/auth", authRoutes);
