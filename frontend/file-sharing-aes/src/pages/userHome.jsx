@@ -25,6 +25,9 @@ const UserHome = () => {
 
     return (
         <div className="user-home-container">
+            <div className="home-title">
+                <img src="./MainLogo-removebg-preview.png" alt="Logo" className="title-logo" />
+            </div>
             <h1><User size={28} className="icon-title" /> Welcome, {username} 👋</h1>
             <p>Your secure file-sharing hub with AES encryption.</p>
 

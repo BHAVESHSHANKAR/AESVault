@@ -108,3 +108,19 @@
 .login-link a:hover {
     text-decoration: underline;
 }
+.loading-icon {
+    animation: spin 1s linear infinite;
+    margin-right: 8px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.signup-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Lock, Mail, User, Key, Eye, EyeOff, ShieldCheck, FileLock, Send } from 'lucide-react'; 
+import { Lock, Mail, User, Key, Eye, EyeOff, ShieldCheck, FileLock, Send, ArrowDownNarrowWide, Loader2 } from 'lucide-react'; 
 import '../styles/SignUp.css';
 
 function SignUp() {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         username: '',
         email: '',
@@ -24,23 +25,34 @@ function SignUp() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const response = await axios.post(`https://aes-vault-apis.vercel.app/api/auth/signup`, formData);
             alert(response.data.message);
             navigate('/login');
         } catch (error) {
             alert(error.response?.data?.error);
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <div className="signup-page">
-            {/* Left Section - Signup Form */}
+            <div className="home-title">
+                <img src="./MainLogo-removebg-preview.png" alt="Logo" className="title-logo" />
+            </div>
+            <div className="scroll-down">
+                Scroll Down to Sign Up
+                <br />
+                <ArrowDownNarrowWide size={24} />
+            </div>
+
             <div className="how-it-works">
                 <h2>🔒 How It Works?</h2>
                 <p>
                     AES Vault provides a highly secure file-sharing experience using 
-                    **Advanced Encryption Standard (AES-256)** to encrypt and decrypt files.
+                    <strong> Advanced Encryption Standard (AES-256)</strong> to encrypt and decrypt files.
                 </p>
 
                 <div className="feature">
@@ -60,13 +72,8 @@ function SignUp() {
                     <h3>Secure Sharing</h3>
                     <p>Files can only be accessed by authorized users using unique decryption keys.</p>
                 </div>
-                <div className="scroll-down">
-    Scroll Down to Sign Up
-    <br />
-    <Lock size={24} />
-</div>
-
             </div>
+
             <div className="signup-container">
                 <form onSubmit={handleSubmit} className="signup-form">
                     <h2 className="signup-title">
@@ -110,16 +117,19 @@ function SignUp() {
                         }
                     </div>
 
-                    <button type="submit" className="signup-button">Sign Up</button>
+                    <button type="submit" className="signup-button" disabled={loading}>
+                        {loading ? (
+                            <>
+                                <Loader2 size={20} className="loading-icon" /> Signing Up...
+                            </>
+                        ) : "Sign Up"}
+                    </button>
 
                     <p className="login-link">
                         Already have an account? <a href="/login">Log in here</a>.
                     </p>
                 </form>
             </div>
-
-            {/* Right Section - How It Works */}
-            
         </div>
     );
 }
