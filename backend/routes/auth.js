@@ -73,7 +73,6 @@
 //         res.status(500).json({ error: "Decryption failed" });
 //     }
 // };
-
 // // 🔹 User Signup
 // router.post("/SignUp", async (req, res) => {
 //     try {
@@ -228,7 +227,6 @@
 //     }
 // });
 // module.exports = router;
-
 
 
 const express = require("express");
