@@ -1,147 +1,110 @@
-/* General Theme */
-:root {
-    --primary-color: #1E3A8A; /* Royal Blue */
-    --secondary-color: #F8FAFC; /* Light Gray */
-    --accent-color: #FFD700; /* Gold */
-    --text-color: #111827; /* Dark Gray */
-    --button-hover: #172554; /* Darker Royal Blue */
-    --transition-speed: 0.3s;
-}
-
 /* Signup Container */
 .signup-container {
-    max-width: 450px; /* Slightly reduced width */
-    margin: 50px auto;
-    padding: 35px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    transition: transform var(--transition-speed) ease-in-out;
-}
-
-.signup-container:hover {
-    transform: translateY(-5px);
-}
-
-/* Signup Title */
-.signup-title {
-    font-size: 1.6rem; /* Slightly smaller */
-    font-weight: 700;
-    color: var(--primary-color);
     display: flex;
-    align-items: center;
     justify-content: center;
-    gap: 10px;
+    align-items: center;
+    height: 100vh;
+    background: #ecf0f3;
 }
 
-/* Info Text */
+/* Signup Form */
+.signup-form {
+    width: 350px;
+    padding: 30px;
+    background: #ecf0f3;
+    border-radius: 12px;
+    box-shadow: 8px 8px 16px #b8b9be, -8px -8px 16px #ffffff;
+    text-align: center;
+}
+
+/* Title */
+.signup-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Info */
 .signup-info {
-    font-size: 0.9rem; /* Smaller font */
-    margin-top: 10px;
-    color: #4B5563; /* Neutral Gray */
-    line-height: 1.6;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+    line-height: 1.5;
 }
 
-/* Input Fields */
+/* Input Group */
 .input-group {
-    margin: 12px 0; /* Reduced spacing */
+    position: relative;
+    margin-bottom: 15px;
     text-align: left;
 }
 
+/* Labels */
 .input-group label {
-    font-size: 0.95rem; /* Smaller label font */
-    font-weight: 600;
-    color: var(--primary-color);
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    display: block;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
 }
 
-/* Medium-Sized Input Fields */
+/* Inputs */
 .input-group input {
     width: 100%;
-    padding: 10px; /* Reduced padding */
-    font-size: 0.95rem; /* Medium text size */
-    border: 2px solid var(--primary-color);
-    border-radius: 6px; /* Slightly smaller radius */
+    padding: 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 8px;
+    background: #ecf0f3;
+    box-shadow: inset 6px 6px 10px #b8b9be, inset -6px -6px 10px #ffffff;
     outline: none;
-    transition: border-color var(--transition-speed);
 }
 
-.input-group input:focus {
-    border-color: var(--button-hover);
+/* Password Eye Icon */
+.eye-icon {
+    position: absolute;
+    right: 15px;
+    top: 40px;
+    cursor: pointer;
+    color: #666;
+    transition: 0.3s;
 }
 
-/* Signup Button */
+.eye-icon:hover {
+    color: #333;
+}
+
+/* Button */
 .signup-button {
     width: 100%;
     padding: 12px;
-    font-size: 0.95rem; /* Medium text size */
-    font-weight: 600;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    background: var(--primary-color);
+    font-size: 16px;
+    font-weight: bold;
     color: white;
-    transition: background var(--transition-speed), transform var(--transition-speed);
+    background: #4A47A3;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 4px 4px 10px #b8b9be, -4px -4px 10px #ffffff;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
 .signup-button:hover {
-    background: var(--button-hover);
-    transform: translateY(-3px);
+    background: #393682;
 }
 
 /* Login Link */
 .login-link {
-    margin-top: 12px;
-    font-size: 0.85rem;
-    color: var(--text-color);
+    font-size: 14px;
+    margin-top: 10px;
 }
 
 .login-link a {
-    color: var(--primary-color);
-    font-weight: bold;
+    color: #4A47A3;
     text-decoration: none;
-    transition: color var(--transition-speed);
+    font-weight: bold;
 }
 
 .login-link a:hover {
-    color: var(--button-hover);
-}
-
-/* Icons */
-.icon {
-    color: var(--primary-color);
-}
-
-/* Responsive Design */
-@media (max-width: 600px) {
-    .signup-container {
-        max-width: 85%;
-        padding: 25px;
-    }
-
-    .signup-title {
-        font-size: 1.4rem; /* Adjusted for mobile */
-        flex-direction: column;
-    }
-
-    .input-group label {
-        font-size: 0.9rem;
-    }
-
-    .input-group input {
-        font-size: 0.9rem;
-        padding: 8px; /* Smaller padding */
-    }
-
-    .signup-button {
-        padding: 10px;
-        font-size: 0.9rem;
-    }
-
-    .login-link {
-        font-size: 0.8rem;
-    }
+    text-decoration: underline;
 }

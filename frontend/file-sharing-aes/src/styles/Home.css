@@ -1,254 +1,118 @@
-:root {
-    --primary-color: #1E3A8A; /* Royal Blue */
-    --secondary-color: #F8FAFC; /* Light Gray */
-    --accent-color: #FFD700; /* Subtle Gold */
-    --text-color: #111827; /* Dark Grayish Black */
-    --button-hover: #172554; /* Darker Royal Blue */
-    --transition-speed: 0.3s;
-}
-
+/* General Styles */
 body {
-    font-family: 'Inter', sans-serif;
-    background-color: var(--secondary-color);
-    color: var(--text-color);
-    margin: 0;
-    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #E0E5EC;
+    color: #2D2D2D;
+    text-align: center;
 }
 
 /* Home Container */
 .home-container {
-    max-width: 800px;
-    margin: 50px auto;
+    max-width: 750px;
+    margin: auto;
     padding: 40px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    transition: transform var(--transition-speed) ease-in-out;
-}
-
-.home-container:hover {
-    transform: translateY(-5px);
+    background: #E0E5EC;
+    border-radius: 20px;
+    box-shadow: 10px 10px 20px #A3B1C6, -10px -10px 20px #FFFFFF;
 }
 
 /* Logo */
 .title-logo {
-    width: 200px;  /* Default size */
-    height: auto;
+    width: 160px;
     margin-bottom: 20px;
-    background-color: white;
-    /* border:1px solid black;
-    border-radius: 5px; */
-    
 }
 
 /* Description */
 .home-description {
-    font-size: 1.1rem;
-    margin-top: 10px;
-    color: #4B5563; /* Neutral Gray */
+    font-size: 18px;
     line-height: 1.6;
+    margin-bottom: 30px;
 }
 
-/* Sections */
-.how-it-works,
-.benefits {
-    text-align: left;
-    margin-top: 30px;
+/* How It Works & Benefits */
+.how-it-works, .benefits {
+    background: #E0E5EC;
     padding: 20px;
-    background: var(--secondary-color);
-    border-left: 5px solid var(--primary-color);
-    border-radius: 8px;
-    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.05);
+    border-radius: 15px;
+    box-shadow: inset 5px 5px 10px #A3B1C6, inset -5px -5px 10px #FFFFFF;
+    margin-bottom: 30px;
 }
 
-.how-it-works h2,
-.benefits h2 {
-    font-size: 1.5rem;
-    color: var(--primary-color);
+.how-it-works h2, .benefits h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
 }
 
-/* Lists */
-.how-it-works ul,
-.benefits ul {
-    padding-left: 20px;
+.icon {
+    color: #4A47A3 !important;
+    margin-right: 8px;
+    color: #6C63FF;
 }
 
-.how-it-works li,
-.benefits li {
-    font-size: 1rem;
-    margin-bottom: 10px;
+.how-it-works ul, .benefits ul {
+    list-style: none;
+    padding: 0;
+}
+
+.how-it-works li, .benefits li {
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 10px;
+    margin: 10px 0;
+    background: #E0E5EC;
+    box-shadow: 5px 5px 10px #A3B1C6, -5px -5px 10px #FFFFFF;
+    transition: transform 0.2s ease-in-out;
+}
+
+.how-it-works li:hover, .benefits li:hover {
+    transform: scale(1.03);
+}
+
+/* Button Container */
+.button-container {
     display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #374151; /* Dark Gray */
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
 }
 
 /* Buttons */
-.button-container {
-    margin-top: 30px;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
-.signup-button,
-.login-button {
-    padding: 12px 24px;
-    font-size: 1rem;
-    font-weight: 600;
+.signup-button, .login-button {
+    background: #E0E5EC;
     border: none;
-    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 18px;
+    border-radius: 50px;
     cursor: pointer;
-    transition: background var(--transition-speed), transform var(--transition-speed);
-    text-transform: uppercase;
+    font-weight: bold;
+    color: #6C63FF;
+    box-shadow: 6px 6px 12px #A3B1C6, -6px -6px 12px #FFFFFF;
+    transition: all 0.3s ease-in-out;
+    width: 160px;
 }
 
-.signup-button {
-    background: var(--primary-color);
-    color: white;
+.signup-button:hover, .login-button:hover {
+    background: #6C63FF;
+    color: #FFFFFF;
+    box-shadow: 6px 6px 12px #4A47A3, -6px -6px 12px #908AFF;
 }
 
-.signup-button:hover {
-    background: var(--button-hover);
-    transform: translateY(-3px);
-}
-
-.login-button {
-    background: var(--accent-color);
-    color: var(--text-color);
-}
-
-.login-button:hover {
-    background: #E6C200;
-    transform: translateY(-3px);
-}
-
-/* Icons */
-.icon {
-    color: var(--primary-color);
-    margin-right: 8px;
-    vertical-align: middle;
-}
-
-.title-icon {
-    color: var(--primary-color);
-}
-
-/* Responsive Design */
-/* Mobile (Up to 600px) */
-@media (max-width: 600px) {
+/* Responsive */
+@media (max-width: 768px) {
     .home-container {
-        max-width: 90%;
         padding: 20px;
-        margin: 20px auto;
-    }
-
-    .home-title {
-        font-size: 1.6rem;
-        text-align: center;
-        flex-direction: column;
-        margin-bottom: 15px;
-    }
-
-    .title-logo {
-        width: 150px;  /* Smaller logo for mobile */
-    }
-
-    .home-description {
-        font-size: 1rem;
-        text-align: center;
-    }
-
-    .how-it-works, .benefits {
-        padding: 15px;
-    }
-
-    .how-it-works h2, .benefits h2 {
-        font-size: 1.3rem;
-    }
-
-    .how-it-works li, .benefits li {
-        font-size: 0.9rem;
     }
 
     .button-container {
-        flex-direction: column;
-        gap: 15px;
+        flex-direction: row;
+        gap: 10px;
     }
 
     .signup-button, .login-button {
-        width: 100%;
-        padding: 14px;
-    }
-}
-
-/* Tablets (601px to 1024px) */
-@media (min-width: 601px) and (max-width: 1024px) {
-    .home-container {
-        max-width: 85%;
-        padding: 30px;
-    }
-
-    .home-title {
-        font-size: 1.8rem;
-    }
-
-    .title-logo {
-        width: 180px;  /* Medium logo size for tablets */
-    }
-
-    .home-description {
-        font-size: 1.05rem;
-    }
-
-    .how-it-works h2, .benefits h2 {
-        font-size: 1.4rem;
-    }
-
-    .how-it-works li, .benefits li {
-        font-size: 1rem;
-    }
-
-    .button-container {
-        gap: 15px;
-    }
-
-    .signup-button, .login-button {
-        padding: 12px 20px;
-    }
-}
-
-/* Large Screens (Above 1024px) */
-@media (min-width: 1025px) {
-    .home-container {
-        max-width: 800px;
-    }
-
-    .home-title {
-        font-size: 2rem;
-    }
-
-    .title-logo {
-        width: 200px;  /* Default size for large screens */
-    }
-
-    .home-description {
-        font-size: 1.1rem;
-    }
-
-    .how-it-works h2, .benefits h2 {
-        font-size: 1.5rem;
-    }
-
-    .how-it-works li, .benefits li {
-        font-size: 1rem;
-    }
-
-    .signup-button, .login-button {
-        padding: 12px 24px;
+        width: 140px;
+        font-size: 16px;
     }
 }
