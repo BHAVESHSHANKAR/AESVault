@@ -289,7 +289,7 @@ const Upload = () => {
                     {loading ? <Loader className="loading-icon" size={20} /> : "Upload File"}
                 </button>
 
-                <p>{message}</p>
+                <p>{message} refresh the page after sharing</p>
             </div>
         </div>
     );
