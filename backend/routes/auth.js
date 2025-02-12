@@ -565,35 +565,39 @@ router.get("/download/:fileId", async (req, res) => {
 //         res.status(500).json({ message: "Error deleting file." });
 //     }
 // });
+
 router.delete("/delete/:fileId", async (req, res) => {
     try {
-        const { fileId } = req.params;
+        const fileId = req.params.fileId;
+
+        // 🔹 Step 1: Find the file in MongoDB
         const file = await Files.findById(fileId);
+        if (!file) return res.status(404).json({ message: "File not found." });
 
-        if (!file) {
-            return res.status(404).json({ message: "File not found." });
-        }
-
-        // Extract Cloudinary public ID from the file URL
+        // 🔹 Step 2: Extract Cloudinary Public ID
         const fileUrlParts = file.fileUrl.split("/");
         const cloudinaryPublicId = fileUrlParts[fileUrlParts.length - 1].split(".")[0];
 
-        // 🔹 Delete file from Cloudinary
+        console.log("Extracted Cloudinary Public ID:", cloudinaryPublicId);
+
+        // 🔹 Step 3: Delete file from Cloudinary
         const cloudinaryResponse = await cloudinary.uploader.destroy(`user_uploads/${cloudinaryPublicId}`, { resource_type: "raw" });
 
+        console.log("Cloudinary Response:", cloudinaryResponse);
+
         if (cloudinaryResponse.result !== "ok") {
-            return res.status(500).json({ message: "Failed to delete file from Cloudinary." });
+            return res.status(500).json({ message: "Failed to delete file from Cloudinary.", error: cloudinaryResponse });
         }
 
-        // 🔹 Delete file from MongoDB
+        // 🔹 Step 4: Delete File from MongoDB
         await Files.findByIdAndDelete(fileId);
 
         res.status(200).json({ message: "File deleted successfully." });
 
     } catch (error) {
         console.error("Error deleting file:", error);
-        res.status(500).json({ message: "Internal server error while deleting file." });
+        res.status(500).json({ message: "Internal server error while deleting file.", error: error.message });
     }
-});
+})
 
 module.exports = router;
