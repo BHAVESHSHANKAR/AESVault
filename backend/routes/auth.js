@@ -426,30 +426,53 @@ router.get("/received-files/:uniqueId", async (req, res) => {
 });
 
 // 🔹 Download & Decrypt File
+// router.get("/download/:fileId", async (req, res) => {
+//     try {
+//         const file = await Files.findById(req.params.fileId);
+//         if (!file) return res.status(404).json({ error: "File not found" });
+
+//         // 🔹 Fetch Encrypted File from Cloudinary
+//         const cloudinaryFileUrl = file.fileUrl;
+
+//         const response = await fetch(cloudinaryFileUrl);
+//         if (!response.ok) throw new Error("Failed to fetch file from Cloudinary");
+
+//         const encryptedBuffer = await response.arrayBuffer();
+//         const decryptedBuffer = decryptBuffer(Buffer.from(encryptedBuffer));
+
+//         res.setHeader("Content-Disposition", `attachment; filename="${file.fileName}"`);
+//         res.setHeader("Content-Type", "application/octet-stream");
+//         res.send(decryptedBuffer);
+
+//     } catch (error) {
+//         console.error("File download failed:", error);
+//         res.status(500).json({ error: "File download failed" });
+//     }
+// });
 router.get("/download/:fileId", async (req, res) => {
     try {
         const file = await Files.findById(req.params.fileId);
         if (!file) return res.status(404).json({ error: "File not found" });
 
         // 🔹 Fetch Encrypted File from Cloudinary
-        const cloudinaryFileUrl = file.fileUrl;
-
-        const response = await fetch(cloudinaryFileUrl);
+        const response = await fetch(file.fileUrl);
         if (!response.ok) throw new Error("Failed to fetch file from Cloudinary");
 
         const encryptedBuffer = await response.arrayBuffer();
         const decryptedBuffer = decryptBuffer(Buffer.from(encryptedBuffer));
 
-        res.setHeader("Content-Disposition", `attachment; filename="${file.fileName}"`);
+        // 🔹 Restore the original filename by removing ".enc"
+        const originalFileName = file.fileName.replace(".enc", "");
+
+        res.setHeader("Content-Disposition", `attachment; filename="${originalFileName}"`);
         res.setHeader("Content-Type", "application/octet-stream");
         res.send(decryptedBuffer);
 
     } catch (error) {
         console.error("File download failed:", error);
-        res.status(500).json({ error: "File download failed" });
+        res.status(500).json({ error: "File download failed", details: error.message });
     }
 });
-
 // 🔹 Delete File from Cloudinary & MongoDB
 router.delete("/delete/:fileId", async (req, res) => {
     try {
