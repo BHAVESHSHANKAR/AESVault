@@ -263,9 +263,14 @@ const encryptBuffer = (buffer) => {
     return Buffer.concat([cipher.update(buffer), cipher.final()]);
 };
 
-const decryptBuffer = (buffer) => {
+// const decryptBuffer = (buffer) => {
+//     const decipher = crypto.createDecipheriv(algorithm, secretKey, iv);
+//     return Buffer.concat([decipher.update(buffer), decipher.final()]);
+// };
+const decryptBuffer = (encryptedBuffer) => {
     const decipher = crypto.createDecipheriv(algorithm, secretKey, iv);
-    return Buffer.concat([decipher.update(buffer), decipher.final()]);
+    const decrypted = Buffer.concat([decipher.update(encryptedBuffer), decipher.final()]);
+    return decrypted;
 };
 
 // 🔹 User Signup
