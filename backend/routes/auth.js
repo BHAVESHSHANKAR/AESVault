@@ -429,6 +429,34 @@ router.post("/upload", upload.single("file"), async (req, res) => {
 //         res.status(500).json({ error: "Failed to fetch received files" });
 //     }
 // });
+// router.get("/received-files/:uniqueId", async (req, res) => {
+//     try {
+//         const receiver = await User.findOne({ uniqueId: req.params.uniqueId });
+
+//         if (!receiver) return res.status(404).json({ error: "Receiver not found" });
+
+//         const receivedFiles = await Files.find({ receiverId: receiver._id })
+//             .populate("senderId", "username uniqueId");
+
+//         if (receivedFiles.length === 0) {
+//             return res.status(200).json({ receivedFiles: [], message: "No received files" });
+//         }
+
+//         // 🔹 Remove ".enc" from file names before sending response
+//         const modifiedFiles = receivedFiles.map(file => ({
+//             _id: file._id,
+//             fileName: file.fileName.replace(".enc", ""), // Remove ".enc"
+//             fileUrl: file.fileUrl,
+//             sender: file.senderId, // senderId is populated
+//         }));
+
+//         res.status(200).json({ receivedFiles: modifiedFiles, receiverUniqueId: receiver.uniqueId });
+
+//     } catch (error) {
+//         console.error("Error fetching received files:", error);
+//         res.status(500).json({ error: "Failed to fetch received files" });
+//     }
+// });
 router.get("/received-files/:uniqueId", async (req, res) => {
     try {
         const receiver = await User.findOne({ uniqueId: req.params.uniqueId });
@@ -436,18 +464,21 @@ router.get("/received-files/:uniqueId", async (req, res) => {
         if (!receiver) return res.status(404).json({ error: "Receiver not found" });
 
         const receivedFiles = await Files.find({ receiverId: receiver._id })
-            .populate("senderId", "username uniqueId");
+            .populate("senderId", "username uniqueId"); // Ensure sender details are populated
 
         if (receivedFiles.length === 0) {
             return res.status(200).json({ receivedFiles: [], message: "No received files" });
         }
 
-        // 🔹 Remove ".enc" from file names before sending response
+        // 🔹 Remove ".enc" from file names and include sender details
         const modifiedFiles = receivedFiles.map(file => ({
             _id: file._id,
             fileName: file.fileName.replace(".enc", ""), // Remove ".enc"
             fileUrl: file.fileUrl,
-            sender: file.senderId, // senderId is populated
+            sender: file.senderId ? { // Ensure sender exists before accessing properties
+                username: file.senderId.username,
+                uniqueId: file.senderId.uniqueId
+            } : { username: "Unknown", uniqueId: "N/A" } // Default if sender is missing
         }));
 
         res.status(200).json({ receivedFiles: modifiedFiles, receiverUniqueId: receiver.uniqueId });
@@ -457,6 +488,7 @@ router.get("/received-files/:uniqueId", async (req, res) => {
         res.status(500).json({ error: "Failed to fetch received files" });
     }
 });
+
 
 
 // 🔹 Download & Decrypt File
