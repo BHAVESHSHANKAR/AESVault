@@ -410,25 +410,54 @@ router.post("/upload", upload.single("file"), async (req, res) => {
 });
 
 // 🔹 Get Received Files
+// router.get("/received-files/:uniqueId", async (req, res) => {
+//     try {
+//         const receiver = await User.findOne({ uniqueId: req.params.uniqueId });
+
+//         if (!receiver) return res.status(404).json({ error: "Receiver not found" });
+
+//         const receivedFiles = await Files.find({ receiverId: receiver._id }).populate("senderId", "username uniqueId");
+
+//         if (receivedFiles.length === 0) {
+//             return res.status(200).json({ receivedFiles: [], message: "No received files" });
+//         }
+
+//         res.status(200).json({ receivedFiles, receiverUniqueId: receiver.uniqueId });
+
+//     } catch (error) {
+//         console.error("Error fetching received files:", error);
+//         res.status(500).json({ error: "Failed to fetch received files" });
+//     }
+// });
 router.get("/received-files/:uniqueId", async (req, res) => {
     try {
         const receiver = await User.findOne({ uniqueId: req.params.uniqueId });
 
         if (!receiver) return res.status(404).json({ error: "Receiver not found" });
 
-        const receivedFiles = await Files.find({ receiverId: receiver._id }).populate("senderId", "username uniqueId");
+        const receivedFiles = await Files.find({ receiverId: receiver._id })
+            .populate("senderId", "username uniqueId");
 
         if (receivedFiles.length === 0) {
             return res.status(200).json({ receivedFiles: [], message: "No received files" });
         }
 
-        res.status(200).json({ receivedFiles, receiverUniqueId: receiver.uniqueId });
+        // 🔹 Remove ".enc" from file names before sending response
+        const modifiedFiles = receivedFiles.map(file => ({
+            _id: file._id,
+            fileName: file.fileName.replace(".enc", ""), // Remove ".enc"
+            fileUrl: file.fileUrl,
+            sender: file.senderId, // senderId is populated
+        }));
+
+        res.status(200).json({ receivedFiles: modifiedFiles, receiverUniqueId: receiver.uniqueId });
 
     } catch (error) {
         console.error("Error fetching received files:", error);
         res.status(500).json({ error: "Failed to fetch received files" });
     }
 });
+
 
 // 🔹 Download & Decrypt File
 // router.get("/download/:fileId", async (req, res) => {
@@ -456,7 +485,6 @@ router.get("/received-files/:uniqueId", async (req, res) => {
 // });
 router.get("/download/:fileId", async (req, res) => {
     try {
-        // 🔹 Find the encrypted file from MongoDB
         const file = await Files.findById(req.params.fileId);
         if (!file) return res.status(404).json({ error: "File not found" });
 
@@ -469,7 +497,7 @@ router.get("/download/:fileId", async (req, res) => {
         // 🔹 Decrypt File
         const decryptedBuffer = decryptBuffer(encryptedBuffer);
 
-        // 🔹 Restore Original File Name
+        // 🔹 Restore Original File Name (removing .enc)
         const originalFileName = file.fileName.replace(".enc", "");
 
         // 🔹 Send File as Download
