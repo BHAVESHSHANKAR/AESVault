@@ -305,6 +305,51 @@ router.post("/login", async (req, res) => {
 });
 
 // 🔹 Upload, Encrypt & Store File in Cloudinary
+// router.post("/upload", upload.single("file"), async (req, res) => {
+//     try {
+//         const { receiverId, senderId } = req.body;
+//         const file = req.file;
+
+//         if (!file || !receiverId || !senderId) {
+//             return res.status(400).json({ error: "File, Sender ID, and Receiver ID are required" });
+//         }
+
+//         const receiver = await User.findOne({ uniqueId: receiverId });
+//         const sender = await User.findOne({ uniqueId: senderId });
+
+//         if (!receiver || !sender) {
+//             return res.status(404).json({ error: "Invalid sender or receiver ID" });
+//         }
+
+//         // 🔹 Encrypt File Buffer
+//         const encryptedBuffer = encryptBuffer(file.buffer);
+
+//         // 🔹 Upload to Cloudinary
+//         const uploadStream = cloudinary.uploader.upload_stream(
+//             { resource_type: "raw", folder: "user_uploads" },
+//             async (error, result) => {
+//                 if (error) return res.status(500).json({ error: "Cloudinary upload failed", details: error.message });
+
+//                 // 🔹 Save File Details in MongoDB
+//                 const newFile = new Files({
+//                     fileName: file.originalname,
+//                     fileUrl: result.secure_url,
+//                     senderId: sender._id,
+//                     receiverId: receiver._id
+//                 });
+
+//                 await newFile.save();
+//                 res.status(200).json({ message: `File securely sent to ${receiver.username}`, fileUrl: result.secure_url });
+//             }
+//         );
+
+//         streamifier.createReadStream(encryptedBuffer).pipe(uploadStream);
+
+//     } catch (error) {
+//         console.error("Upload Error:", error);
+//         res.status(500).json({ error: "File upload failed", details: error.message });
+//     }
+// });
 router.post("/upload", upload.single("file"), async (req, res) => {
     try {
         const { receiverId, senderId } = req.body;
@@ -321,25 +366,33 @@ router.post("/upload", upload.single("file"), async (req, res) => {
             return res.status(404).json({ error: "Invalid sender or receiver ID" });
         }
 
-        // 🔹 Encrypt File Buffer
+        // 🔹 Encrypt the file buffer
         const encryptedBuffer = encryptBuffer(file.buffer);
+        const encryptedFileName = file.originalname + ".enc"; // Preserve sender's filename with .enc extension
 
         // 🔹 Upload to Cloudinary
         const uploadStream = cloudinary.uploader.upload_stream(
-            { resource_type: "raw", folder: "user_uploads" },
+            {
+                resource_type: "raw", // For any file type
+                folder: "user_uploads",
+                public_id: encryptedFileName // Set filename in Cloudinary
+            },
             async (error, result) => {
                 if (error) return res.status(500).json({ error: "Cloudinary upload failed", details: error.message });
 
                 // 🔹 Save File Details in MongoDB
                 const newFile = new Files({
-                    fileName: file.originalname,
+                    fileName: encryptedFileName,
                     fileUrl: result.secure_url,
                     senderId: sender._id,
                     receiverId: receiver._id
                 });
 
                 await newFile.save();
-                res.status(200).json({ message: `File securely sent to ${receiver.username}`, fileUrl: result.secure_url });
+                res.status(200).json({ 
+                    message: `File securely sent to ${receiver.username}`, 
+                    fileUrl: result.secure_url 
+                });
             }
         );
 
