@@ -204,25 +204,28 @@ router.delete("/delete/:fileId", async (req, res) => {
 
         if (!file) return res.status(404).json({ message: "File not found." });
 
-        console.log("Cloudinary File URL:", file.fileUrl);  // Debugging
+        console.log("Cloudinary File URL:", file.fileUrl); // Debugging
 
         // 🔹 Extract Cloudinary Public ID Correctly
         const urlParts = file.fileUrl.split("/");
         const cloudinaryFileName = urlParts[urlParts.length - 1].split(".")[0];
         const cloudinaryPublicId = `user_uploads/${cloudinaryFileName}`;
 
-        console.log("Cloudinary Public ID:", cloudinaryPublicId);  // Debugging
+        console.log("Cloudinary Public ID:", cloudinaryPublicId); // Debugging
 
-        // 🔹 Delete from Cloudinary
-        const cloudinaryResponse = await cloudinary.uploader.destroy(cloudinaryPublicId, { resource_type: "raw" });
+        // 🔹 Delete from Cloudinary (Force Invalidating Cache)
+        const cloudinaryResponse = await cloudinary.uploader.destroy(cloudinaryPublicId, {
+            resource_type: "raw",
+            invalidate: true, // 🔹 Clears from Cloudinary cache
+        });
 
-        console.log("Cloudinary Delete Response:", cloudinaryResponse);  // Debugging
+        console.log("Cloudinary Delete Response:", cloudinaryResponse); // Debugging
 
         if (cloudinaryResponse.result !== "ok" && cloudinaryResponse.result !== "not found") {
             return res.status(500).json({ message: "Cloudinary file deletion failed.", cloudinaryResponse });
         }
 
-        // 🔹 Delete from MongoDB after Cloudinary deletion
+        // 🔹 Delete from MongoDB
         await Files.findByIdAndDelete(fileId);
 
         res.status(200).json({ message: "File deleted successfully from Cloudinary and MongoDB." });
@@ -232,5 +235,6 @@ router.delete("/delete/:fileId", async (req, res) => {
         res.status(500).json({ message: "Error deleting file.", error: error.message });
     }
 });
+
 
 module.exports = router;
