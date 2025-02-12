@@ -410,25 +410,25 @@ router.post("/upload", upload.single("file"), async (req, res) => {
 });
 
 // 🔹 Get Received Files
-// router.get("/received-files/:uniqueId", async (req, res) => {
-//     try {
-//         const receiver = await User.findOne({ uniqueId: req.params.uniqueId });
+router.get("/received-files/:uniqueId", async (req, res) => {
+    try {
+        const receiver = await User.findOne({ uniqueId: req.params.uniqueId });
 
-//         if (!receiver) return res.status(404).json({ error: "Receiver not found" });
+        if (!receiver) return res.status(404).json({ error: "Receiver not found" });
 
-//         const receivedFiles = await Files.find({ receiverId: receiver._id }).populate("senderId", "username uniqueId");
+        const receivedFiles = await Files.find({ receiverId: receiver._id }).populate("senderId", "username uniqueId");
 
-//         if (receivedFiles.length === 0) {
-//             return res.status(200).json({ receivedFiles: [], message: "No received files" });
-//         }
+        if (receivedFiles.length === 0) {
+            return res.status(200).json({ receivedFiles: [], message: "No received files" });
+        }
 
-//         res.status(200).json({ receivedFiles, receiverUniqueId: receiver.uniqueId });
+        res.status(200).json({ receivedFiles, receiverUniqueId: receiver.uniqueId });
 
-//     } catch (error) {
-//         console.error("Error fetching received files:", error);
-//         res.status(500).json({ error: "Failed to fetch received files" });
-//     }
-// });
+    } catch (error) {
+        console.error("Error fetching received files:", error);
+        res.status(500).json({ error: "Failed to fetch received files" });
+    }
+});
 // router.get("/received-files/:uniqueId", async (req, res) => {
 //     try {
 //         const receiver = await User.findOne({ uniqueId: req.params.uniqueId });
@@ -457,37 +457,37 @@ router.post("/upload", upload.single("file"), async (req, res) => {
 //         res.status(500).json({ error: "Failed to fetch received files" });
 //     }
 // });
-router.get("/received-files/:uniqueId", async (req, res) => {
-    try {
-        const receiver = await User.findOne({ uniqueId: req.params.uniqueId });
+// router.get("/received-files/:uniqueId", async (req, res) => {
+//     try {
+//         const receiver = await User.findOne({ uniqueId: req.params.uniqueId });
 
-        if (!receiver) return res.status(404).json({ error: "Receiver not found" });
+//         if (!receiver) return res.status(404).json({ error: "Receiver not found" });
 
-        const receivedFiles = await Files.find({ receiverId: receiver._id })
-            .populate("senderId", "username uniqueId"); // Ensure sender details are populated
+//         const receivedFiles = await Files.find({ receiverId: receiver._id })
+//             .populate("senderId", "username uniqueId"); // Ensure sender details are populated
 
-        if (receivedFiles.length === 0) {
-            return res.status(200).json({ receivedFiles: [], message: "No received files" });
-        }
+//         if (receivedFiles.length === 0) {
+//             return res.status(200).json({ receivedFiles: [], message: "No received files" });
+//         }
 
-        // 🔹 Remove ".enc" from file names and include sender details
-        const modifiedFiles = receivedFiles.map(file => ({
-            _id: file._id,
-            fileName: file.fileName.replace(".enc", ""), // Remove ".enc"
-            fileUrl: file.fileUrl,
-            sender: file.senderId ? { // Ensure sender exists before accessing properties
-                username: file.senderId.username,
-                uniqueId: file.senderId.uniqueId
-            } : { username: "Unknown", uniqueId: "N/A" } // Default if sender is missing
-        }));
+//         // 🔹 Remove ".enc" from file names and include sender details
+//         const modifiedFiles = receivedFiles.map(file => ({
+//             _id: file._id,
+//             fileName: file.fileName.replace(".enc", ""), // Remove ".enc"
+//             fileUrl: file.fileUrl,
+//             sender: file.senderId ? { // Ensure sender exists before accessing properties
+//                 username: file.senderId.username,
+//                 uniqueId: file.senderId.uniqueId
+//             } : { username: "Unknown", uniqueId: "N/A" } // Default if sender is missing
+//         }));
 
-        res.status(200).json({ receivedFiles: modifiedFiles, receiverUniqueId: receiver.uniqueId });
+//         res.status(200).json({ receivedFiles: modifiedFiles, receiverUniqueId: receiver.uniqueId });
 
-    } catch (error) {
-        console.error("Error fetching received files:", error);
-        res.status(500).json({ error: "Failed to fetch received files" });
-    }
-});
+//     } catch (error) {
+//         console.error("Error fetching received files:", error);
+//         res.status(500).json({ error: "Failed to fetch received files" });
+//     }
+// });
 
 
 
@@ -565,5 +565,4 @@ router.delete("/delete/:fileId", async (req, res) => {
         res.status(500).json({ message: "Error deleting file." });
     }
 });
-
 module.exports = router;
