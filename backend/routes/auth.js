@@ -451,6 +451,7 @@ router.get("/received-files/:uniqueId", async (req, res) => {
 // });
 router.get("/download/:fileId", async (req, res) => {
     try {
+        // 🔹 Find the encrypted file from MongoDB
         const file = await Files.findById(req.params.fileId);
         if (!file) return res.status(404).json({ error: "File not found" });
 
@@ -458,12 +459,15 @@ router.get("/download/:fileId", async (req, res) => {
         const response = await fetch(file.fileUrl);
         if (!response.ok) throw new Error("Failed to fetch file from Cloudinary");
 
-        const encryptedBuffer = await response.arrayBuffer();
-        const decryptedBuffer = decryptBuffer(Buffer.from(encryptedBuffer));
+        const encryptedBuffer = Buffer.from(await response.arrayBuffer());
 
-        // 🔹 Restore the original filename by removing ".enc"
+        // 🔹 Decrypt File
+        const decryptedBuffer = decryptBuffer(encryptedBuffer);
+
+        // 🔹 Restore Original File Name
         const originalFileName = file.fileName.replace(".enc", "");
 
+        // 🔹 Send File as Download
         res.setHeader("Content-Disposition", `attachment; filename="${originalFileName}"`);
         res.setHeader("Content-Type", "application/octet-stream");
         res.send(decryptedBuffer);
