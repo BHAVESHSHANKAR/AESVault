@@ -1,205 +1,21 @@
-// // import { useState } from "react";
-// // import axios from "axios";
-// // import { UploadCloud, User, UserCheck } from "lucide-react"; // Icons
-// // import "../styles/Upload.css";
-// // import { useLocation } from "react-router-dom";
-// // const Upload = () => {
-// //     const {username,uniqueId}=useLocation().state || {};
-// //     const [file, setFile] = useState(null);
-// //     const [receiverId, setReceiverId] = useState("");
-// //     const [senderId, setSenderId] = useState("");
-// //     const [message, setMessage] = useState("");
-
-// //     const handleFileChange = (e) => {
-// //         setFile(e.target.files[0]);
-// //     };
-
-// //     const handleUpload = async () => {
-// //         if (!file || !receiverId || !senderId) {
-// //             setMessage("⚠️ All fields are required!");
-// //             return;
-// //         }
-
-// //         const formData = new FormData();
-// //         formData.append("file", file);
-// //         formData.append("receiverId", receiverId);
-// //         formData.append("senderId", senderId);
-
-// //         try {
-// //             const response = await axios.post("http://localhost:5000/api/auth/upload", formData, {
-// //                 headers: { "Content-Type": "multipart/form-data" },
-// //             });
-// //             if (uniqueId !== senderId) {
-// //                 setMessage("❌Unauthirized access! You can only enter Your uniqueId because you are Sender");
-// //                 return;
-// //             }
-// //             setMessage("✅ " + response.data.message);
-// //             setFile(null);
-// //             setReceiverId("");
-// //             setSenderId("");
-// //         } catch (error) {
-// //             setMessage("❌ File upload failed.");
-// //             console.error(error);
-// //         }
-// //     };
-
-// //     return (
-// //         <div className="upload-container">
-// //             <h1>Welcome {username}</h1>
-// //             <h2 className="upload-title">
-// //                 <UploadCloud size={24} /> Secure File Upload
-// //             </h2>
-// //             <p className="upload-subtitle">
-// //                 Upload encrypted files securely. Only the intended receiver can access them.
-// //             </p>
-
-// //             <div className="upload-form">
-// //                 <div className="input-group">
-// //                     <User size={18} />
-// //                     <input 
-// //                         type="text" 
-// //                         placeholder="Sender ID" 
-// //                         value={senderId} 
-// //                         onChange={(e) => setSenderId(e.target.value)} 
-// //                     />
-// //                 </div>
-
-// //                 <div className="input-group">
-// //                     <UserCheck size={18} />
-// //                     <input 
-// //                         type="text" 
-// //                         placeholder="Receiver ID" 
-// //                         value={receiverId} 
-// //                         onChange={(e) => setReceiverId(e.target.value)} 
-// //                     />
-// //                 </div>
-
-// //                 <input type="file" onChange={handleFileChange} />
-
-// //                 <button onClick={handleUpload} className="upload-btn">Upload File</button>
-
-// //                 <p>{message}</p>
-// //             </div>
-// //         </div>
-// //     );
-// // };
-
-// // export default Upload;
-// import { useState, useRef } from "react";
-// import axios from "axios";
-// import { UploadCloud, User, UserCheck } from "lucide-react"; // Icons
-// import "../styles/Upload.css";
-// import { useLocation } from "react-router-dom";
-
-// const Upload = () => {
-//     const { username, uniqueId } = useLocation().state || {};
-//     const [file, setFile] = useState(null);
-//     const [receiverId, setReceiverId] = useState("");
-//     const [senderId, setSenderId] = useState("");
-//     const [message, setMessage] = useState("");
-//     const fileInputRef = useRef(null); // Ref for file input
-
-//     const handleFileChange = (e) => {
-//         setFile(e.target.files[0]);
-//     };
-
-//     const handleUpload = async () => {
-//         if (!file || !receiverId || !senderId) {
-//             setMessage("⚠️ All fields are required!");
-//             return;
-//         }
-
-//         if (uniqueId !== senderId) {
-//             setMessage("❌ Unauthorized access! You can only enter your uniqueId because you are the Sender.");
-//             return;
-//         }
-
-//         const formData = new FormData();
-//         formData.append("file", file);
-//         formData.append("receiverId", receiverId);
-//         formData.append("senderId", senderId);
-
-//         try {
-//             const response = await axios.post(`https://aes-vault-apis.vercel.app/api/auth/upload`, formData, {
-//                 headers: { "Content-Type": "multipart/form-data" },
-//             });
-
-//             setMessage("✅ " + response.data.message);
-//             setFile(null);
-//             setReceiverId("");
-//             setSenderId("");
-
-//             if (fileInputRef.current) {
-//                 fileInputRef.current.value = ""; // Reset file input field
-//             }
-//         } catch (error) {
-//             setMessage("❌ File upload failed.");
-//             console.error(error);
-//         }
-//     };
-
-//     return (
-//         <div className="upload-container">
-//             <div className="home-title">
-//                 <img src="./MainLogo-removebg-preview.png" alt="Logo" className="title-logo" />
-//             </div>
-//             <h1>Welcome {username}</h1>
-//             <h2 className="upload-title">
-//                 <UploadCloud size={24} /> Secure File Upload
-//             </h2>
-//             <p className="upload-subtitle">
-//                 Upload encrypted files securely. Only the intended receiver can access them.
-//             </p>
-
-//             <div className="upload-form">
-//                 <div className="input-group">
-//                     <User size={18} />
-//                     <input 
-//                         type="text" 
-//                         placeholder="Sender ID (Your Unique ID)" 
-//                         value={senderId} 
-//                         onChange={(e) => setSenderId(e.target.value)} 
-//                     />
-//                 </div>
-
-//                 <div className="input-group">
-//                     <UserCheck size={18} />
-//                     <input 
-//                         type="text" 
-//                         placeholder="Receiver ID" 
-//                         value={receiverId} 
-//                         onChange={(e) => setReceiverId(e.target.value)} 
-//                     />
-//                 </div>
-
-//                 <input 
-//                     type="file" 
-//                     ref={fileInputRef} // Attach ref to file input
-//                     onChange={handleFileChange} 
-//                 />
-
-//                 <button onClick={handleUpload} className="upload-btn">Upload File</button>
-
-//                 <p>{message}</p>
-//             </div>
-//         </div>
-//     );
-// };
-
-// export default Upload;
 import { useState, useRef } from "react";
 import axios from "axios";
-import { UploadCloud, User, UserCheck, Loader } from "lucide-react"; // Icons
+import { UploadCloud, User, UserCheck, Loader, Home } from "lucide-react";
+import { Layout, Card, Input, Button, message, Space, Typography } from 'antd';
+import { motion } from 'framer-motion';
+import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/Upload.css";
-import { useLocation } from "react-router-dom";
+
+const { Header, Content } = Layout;
+const { Title, Text } = Typography;
 
 const Upload = () => {
     const { username, uniqueId } = useLocation().state || {};
+    const navigate = useNavigate();
     const [file, setFile] = useState(null);
     const [receiverId, setReceiverId] = useState("");
     const [senderId, setSenderId] = useState("");
-    const [message, setMessage] = useState("");
-    const [loading, setLoading] = useState(false); // State for loader
+    const [loading, setLoading] = useState(false);
     const fileInputRef = useRef(null);
 
     const handleFileChange = (e) => {
@@ -208,12 +24,12 @@ const Upload = () => {
 
     const handleUpload = async () => {
         if (!file || !receiverId || !senderId) {
-            setMessage("⚠️ All fields are required!");
+            message.error("⚠️ All fields are required!");
             return;
         }
 
         if (uniqueId !== senderId) {
-            setMessage("❌ Unauthorized access! You can only enter your uniqueId because you are the Sender.");
+            message.error("❌ Unauthorized access! You can only enter your uniqueId because you are the Sender.");
             return;
         }
 
@@ -222,76 +38,177 @@ const Upload = () => {
         formData.append("receiverId", receiverId);
         formData.append("senderId", senderId);
 
-        setLoading(true); // Start loading animation
+        setLoading(true);
 
         try {
-            const response = await axios.post(`https://aes-vault-apis.vercel.app/api/auth/upload`, formData, {
+            // const response = await axios.post(`http://localhost:5000/api/auth/upload`, formData, {
+                const response = await axios.post(`https://aes-vault-apis.vercel.app/api/auth/upload`, formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
 
-            setMessage("✅ " + response.data.message);
+            message.success("✅ " + response.data.message);
             setFile(null);
             setReceiverId("");
             setSenderId("");
 
             if (fileInputRef.current) {
-                fileInputRef.current.value = ""; // Reset file input
+                fileInputRef.current.value = "";
             }
         } catch (error) {
-            setMessage("❌ File upload failed.");
+            message.error("❌ File upload failed.");
             console.error(error);
         } finally {
-            setLoading(false); // Stop loading animation
+            setLoading(false);
+        }
+    };
+
+    const cardVariants = {
+        hidden: { 
+            opacity: 0,
+            rotateY: 360,
+            scale: 0.8
+        },
+        visible: { 
+            opacity: 1,
+            rotateY: 0,
+            scale: 1,
+            transition: {
+                duration: 0.8,
+                ease: "easeOut"
+            }
         }
     };
 
     return (
-        <div className="upload-container">
-            <div className="home-title">
-                <img src="./MainLogo-removebg-preview.png" alt="Logo" className="title-logo" />
-            </div>
-            <h1>Welcome {username}</h1>
-            <h2 className="upload-title">
-                <UploadCloud size={24} /> Secure File Upload
-            </h2>
-            <p className="upload-subtitle">
-                Upload encrypted files securely. Only the intended receiver can access them.
-            </p>
+        <Layout className="upload-layout">
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+            >
+                <Header className="site-header">
+                    <div className="header-content">
+                        <Button 
+                            type="primary"
+                            icon={<Home size={20} />}
+                            size="large"
+                            onClick={() => navigate('/userHome', { state: { username, uniqueId } })}
+                            className="home-button"
+                        >
+                            Back to Home
+                        </Button>
+                    </div>
+                </Header>
 
-            <div className="upload-form">
-                <div className="input-group">
-                    <User size={18} />
-                    <input 
-                        type="text" 
-                        placeholder="Sender ID (Your Unique ID)" 
-                        value={senderId} 
-                        onChange={(e) => setSenderId(e.target.value)} 
-                    />
-                </div>
+                <Content className="upload-content">
+                    <motion.div 
+                        className="logo-section"
+                        initial={{ opacity: 0, x: -50 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        <img 
+                            src="./MainLogo-removebg-preview.png" 
+                            alt="Logo" 
+                            className="main-logo"
+                        />
+                    </motion.div>
 
-                <div className="input-group">
-                    <UserCheck size={18} />
-                    <input 
-                        type="text" 
-                        placeholder="Receiver ID" 
-                        value={receiverId} 
-                        onChange={(e) => setReceiverId(e.target.value)} 
-                    />
-                </div>
+                    <motion.div 
+                        className="upload-card-section"
+                        variants={cardVariants}
+                        initial="hidden"
+                        animate="visible"
+                    >
+                        <Card className="upload-card">
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.3 }}
+                            >
+                                <Title level={2} className="upload-title">
+                                    <Space>
+                                        <UploadCloud size={24} className="title-icon" />
+                                        Secure File Upload
+                                    </Space>
+                                </Title>
+                                
+                                <Text className="upload-subtitle">
+                                    Upload encrypted files securely. Only the intended receiver can access them.
+                                </Text>
 
-                <input 
-                    type="file" 
-                    ref={fileInputRef} 
-                    onChange={handleFileChange} 
-                />
+                                <Space direction="vertical" size="large" className="upload-form">
+                                    <motion.div
+                                        whileHover={{ scale: 1.02 }}
+                                        transition={{ type: "spring", stiffness: 400 }}
+                                    >
+                                        <Card className="input-card">
+                                            <Input 
+                                                prefix={<User size={18} className="input-icon" />}
+                                                placeholder="Sender ID (Your Unique ID)" 
+                                                value={senderId} 
+                                                onChange={(e) => setSenderId(e.target.value)}
+                                                className="styled-input"
+                                            />
+                                        </Card>
+                                    </motion.div>
 
-                <button onClick={handleUpload} className="upload-btn" disabled={loading}>
-                    {loading ? <Loader className="loading-icon" size={20} /> : "Upload File"}
-                </button>
+                                    <motion.div
+                                        whileHover={{ scale: 1.02 }}
+                                        transition={{ type: "spring", stiffness: 400 }}
+                                    >
+                                        <Card className="input-card">
+                                            <Input 
+                                                prefix={<UserCheck size={18} className="input-icon" />}
+                                                placeholder="Receiver ID" 
+                                                value={receiverId} 
+                                                onChange={(e) => setReceiverId(e.target.value)}
+                                                className="styled-input"
+                                            />
+                                        </Card>
+                                    </motion.div>
 
-                <p>{message} refresh the page after sharing</p>
-            </div>
-        </div>
+                                    <motion.div
+                                        whileHover={{ scale: 1.02 }}
+                                        transition={{ type: "spring", stiffness: 400 }}
+                                    >
+                                        <input 
+                                            type="file" 
+                                            ref={fileInputRef} 
+                                            onChange={handleFileChange}
+                                            className="file-input" 
+                                        />
+                                    </motion.div>
+
+                                    <motion.div
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                    >
+                                        <Button 
+                                            type="primary"
+                                            onClick={handleUpload}
+                                            disabled={loading}
+                                            className="upload-button"
+                                            block
+                                            size="large"
+                                        >
+                                            {loading ? (
+                                                <Space>
+                                                    <Loader className="loading-icon" size={20} />
+                                                    Uploading...
+                                                </Space>
+                                            ) : (
+                                                'Upload File'
+                                            )}
+                                        </Button>
+                                    </motion.div>
+                                </Space>
+                            </motion.div>
+                        </Card>
+                    </motion.div>
+                </Content>
+            </motion.div>
+        </Layout>
     );
 };
 

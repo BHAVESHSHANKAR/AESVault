@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Lock, Mail, User, Key, Eye, EyeOff, ShieldCheck, FileLock, Send, ArrowDownNarrowWide, Loader2 } from 'lucide-react'; 
+import { Lock, Mail, User, Key, Eye, EyeOff, Home } from 'lucide-react';
+import { Card, Input, Button, Typography, Space, message } from 'antd';
+import { motion } from 'framer-motion';
 import '../styles/SignUp.css';
 
 function SignUp() {
@@ -27,110 +29,143 @@ function SignUp() {
         e.preventDefault();
         setLoading(true);
         try {
+            // const response = await axios.post(`http://localhost:5000/api/auth/signup`, formData);
             const response = await axios.post(`https://aes-vault-apis.vercel.app/api/auth/signup`, formData);
-            alert(response.data.message);
+            message.success(response.data.message);
             navigate('/login');
         } catch (error) {
-            alert(error.response?.data?.error);
+            message.error(error.response?.data?.error || 'Signup failed');
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="signup-page">
-            <div className="home-title">
-                <img src="./MainLogo-removebg-preview.png" alt="Logo" className="title-logo" />
-            </div>
-            <div className="scroll-down">
-                Scroll Down to Sign Up
-                <br />
-                <ArrowDownNarrowWide size={24} />
-            </div>
-
-            <div className="how-it-works">
-                <h2>🔒 How It Works?</h2>
-                <p>
-                    AES Vault provides a highly secure file-sharing experience using 
-                    <strong> Advanced Encryption Standard (AES-256)</strong> to encrypt and decrypt files.
-                </p>
-
-                <div className="feature">
-                    <ShieldCheck size={28} className="icon-feature" />
-                    <h3>End-to-End Encryption</h3>
-                    <p>Data is encrypted before leaving your device and only decrypted upon retrieval.</p>
-                </div>
-
-                <div className="feature">
-                    <FileLock size={28} className="icon-feature" />
-                    <h3>File Protection</h3>
-                    <p>Every file is locked with AES encryption to prevent unauthorized access.</p>
-                </div>
-
-                <div className="feature">
-                    <Send size={28} className="icon-feature" />
-                    <h3>Secure Sharing</h3>
-                    <p>Files can only be accessed by authorized users using unique decryption keys.</p>
-                </div>
+        <motion.div 
+            className="signup-container"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+        >
+            <div className="home-button-container">
+                <Button 
+                    type="primary"
+                    icon={<Home size={20} />}
+                    size="large"
+                    className="home-button"
+                    onClick={() => navigate('/')}
+                    shape="round"
+                >
+                    Back to Home
+                </Button>
             </div>
 
-            <div className="signup-container">
-                <form onSubmit={handleSubmit} className="signup-form">
-                    <h2 className="signup-title">
-                        <Lock size={28} className="icon" /> Create a Secure Account
-                    </h2>
+            <motion.div 
+                className="home-title"
+                initial={{ x: -50, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.5 }}
+            >
+                <img 
+                    src="./MainLogo-removebg-preview.png" 
+                    alt="Logo" 
+                    className="title-logo"
+                />
+            </motion.div>
 
-                    <p className="signup-info">
-                        Our platform uses <strong>AES Encryption</strong> to secure your file-sharing experience.
-                        Your files are encrypted before transmission, ensuring <strong>end-to-end security</strong>
-                        against unauthorized access.
-                    </p>
+            <motion.div
+                className="signup-card-container"
+                initial={{ x: 50, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.5 }}
+            >
+                <Card className="signup-card">
+                    <form onSubmit={handleSubmit}>
+                        <Typography.Title level={2} className="signup-title">
+                            <Lock size={24} className="icon-title" /> Create Account
+                        </Typography.Title>
 
-                    <div className="input-group">
-                        <label><User size={20} className="icon" /> Username</label>
-                        <input type="text" name="username" placeholder="Username" value={formData.username} onChange={handleChange} required />
-                    </div>
+                        <Space direction="vertical" size="large" style={{ width: '100%' }}>
+                            <Card className="input-card">
+                                <Input
+                                    prefix={<User size={16} className="input-icon" />}
+                                    name="username"
+                                    placeholder="Username"
+                                    value={formData.username}
+                                    onChange={handleChange}
+                                    required
+                                    size="large"
+                                    className="styled-input"
+                                />
+                            </Card>
 
-                    <div className="input-group">
-                        <label><Mail size={20} className="icon" /> Email</label>
-                        <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
-                    </div>
+                            <Card className="input-card">
+                                <Input
+                                    prefix={<Mail size={16} className="input-icon" />}
+                                    name="email"
+                                    type="email"
+                                    placeholder="Email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    required
+                                    size="large"
+                                    className="styled-input"
+                                />
+                            </Card>
 
-                    <div className="input-group">
-                        <label><Key size={20} className="icon" /> Unique ID</label>
-                        <input type="text" name="uniqueId" placeholder="Keep any UniqueId" value={formData.uniqueId} onChange={handleChange} required />
-                    </div>
+                            <Card className="input-card">
+                                <Input
+                                    prefix={<Key size={16} className="input-icon" />}
+                                    name="uniqueId"
+                                    placeholder="Keep any UniqueId"
+                                    value={formData.uniqueId}
+                                    onChange={handleChange}
+                                    required
+                                    size="large"
+                                    className="styled-input"
+                                />
+                            </Card>
 
-                    <div className="input-group">
-                        <label><Lock size={20} className="icon" /> Password</label>
-                        <input
-                            type={showPassword ? "text" : "password"}
-                            name="password"
-                            placeholder="Password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            required
-                        />
-                        {showPassword ? 
-                            <EyeOff size={20} className="eye-icon" onClick={() => setShowPassword(false)} /> : 
-                            <Eye size={20} className="eye-icon" onClick={() => setShowPassword(true)} />
-                        }
-                    </div>
+                            <Card className="input-card">
+                                <Input
+                                    prefix={<Lock size={16} className="input-icon" />}
+                                    suffix={
+                                        showPassword ? 
+                                            <EyeOff size={16} className="eye-icon" onClick={() => setShowPassword(false)} /> : 
+                                            <Eye size={16} className="eye-icon" onClick={() => setShowPassword(true)} />
+                                    }
+                                    name="password"
+                                    type={showPassword ? "text" : "password"}
+                                    placeholder="Password"
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    required
+                                    size="large"
+                                    className="styled-input"
+                                />
+                            </Card>
 
-                    <button type="submit" className="signup-button" disabled={loading}>
-                        {loading ? (
-                            <>
-                                <Loader2 size={20} className="loading-icon" /> Signing Up...
-                            </>
-                        ) : "Sign Up"}
-                    </button>
+                            <Button 
+                                type="primary" 
+                                htmlType="submit" 
+                                block 
+                                size="large"
+                                loading={loading}
+                                className="signup-button"
+                            >
+                                {loading ? 'Creating Account...' : 'Sign Up'}
+                            </Button>
 
-                    <p className="login-link">
-                        Already have an account? <a href="/login">Log in here</a>.
-                    </p>
-                </form>
-            </div>
-        </div>
+                            <div className="extra-links">
+                                <Button type="link" onClick={() => navigate('/login')}>
+                                    Already have an account? Login
+                                </Button>
+                            </div>
+                        </Space>
+                    </form>
+                </Card>
+            </motion.div>
+        </motion.div>
     );
 }
 
