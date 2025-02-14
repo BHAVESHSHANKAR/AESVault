@@ -86,8 +86,8 @@ const Login = () => {
                                     prefix={<Lock size={16} className="icon" />}
                                     suffix={
                                         showPassword ? 
-                                            <EyeOff size={16} className="eye-icon" onClick={() => setShowPassword(false)} /> : 
-                                            <Eye size={16} className="eye-icon" onClick={() => setShowPassword(true)} />
+                                            <Eye size={16} className="eye-icon" onClick={() => setShowPassword(false)} /> : 
+                                            <EyeOff size={16} className="eye-icon" onClick={() => setShowPassword(true)} />
                                     }
                                     type={showPassword ? "text" : "password"}
                                     placeholder="Enter your password"
