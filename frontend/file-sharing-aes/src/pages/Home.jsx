@@ -222,7 +222,7 @@ function Home() {
                             {
                                 icon: <UploadCloud size={40} />,
                                 title: "Upload",
-                                description: "The sender uploads a file and provides the recipient's email."
+                                description: "The sender uploads a file and provides the recipient's uniqueId."
                             },
                             {
                                 icon: <FileText size={40} />,
@@ -232,12 +232,12 @@ function Home() {
                             {
                                 icon: <Key size={40} />,
                                 title: "Share",
-                                description: "The recipient gets a secure download link."
+                                description: "The recipient gets a secure download button after files received."
                             },
                             {
                                 icon: <Lock size={40} />,
                                 title: "Secure Access",
-                                description: "Only the intended recipient can decrypt the file using a unique decryption key."
+                                description: "Only the intended recipient can decrypt the file using a uniqueId."
                             },
                             {
                                 icon: <ShieldCheck size={40} />,
@@ -299,22 +299,22 @@ function Home() {
                             {
                                 icon: <ShieldCheck size={32} />,
                                 title: "End-to-End Encryption",
-                                text: "No third party can access your files."
+                                
                             },
                             {
                                 icon: <UploadCloud size={32} />,
                                 title: "Fast & Secure Transfers",
-                                text: "Encrypted files are transmitted quickly."
+                                
                             },
                             {
                                 icon: <CheckCircle size={32} />,
                                 title: "Easy to Use",
-                                text: "Simple UI for hassle-free file sharing."
+                                
                             },
                             {
                                 icon: <FileText size={32} />,
                                 title: "No File Size Limit",
-                                text: "Upload large files without restrictions."
+                                
                             }
                         ].map((item, index) => (
                             <Col xs={24} sm={12} md={6} key={index}>
