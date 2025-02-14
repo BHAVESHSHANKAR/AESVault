@@ -94,9 +94,10 @@ function Home() {
                             <Button type="primary" onClick={() => navigate('/signup')} size="large">
                                 Sign Up
                             </Button>
-                            <Button type="primary" onClick={()=> navigate('/aboutus')} size="large">
+                            <Button type="primary" onClick={() => window.open('/aboutus', '_blank')}  size="large">
                                 About us
                             </Button>
+                            
                         </Space>
                     </Col>
 
@@ -141,6 +142,18 @@ function Home() {
                     >
                         Sign Up
                     </Button>
+                    <Button 
+                        type="primary" 
+                        onClick={() => {
+                            // navigate('/aboutus');
+                            window.open('/aboutus', '_blank')
+                            setMobileMenuOpen(false);
+                        }} 
+                        block
+                    >
+                        About us
+                    </Button>
+                    
                 </Space>
             </Drawer>
 
