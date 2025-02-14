@@ -5,6 +5,7 @@ import SignUp from './pages/SignUp';
 import UserHome from './pages/userHome';
 import Upload from './pages/Upload';
 import Dashboard from './pages/Dashboard';
+import AboutUs from './pages/AboutUs';
 function App() {
   return (
     <BrowserRouter>
@@ -15,6 +16,7 @@ function App() {
         <Route path="/userhome" element={<UserHome/>} />
         <Route path="/upload" element={<Upload/>} />
         <Route path="/dashboard" element={<Dashboard/>} />
+        <Route path="/aboutus" element={<AboutUs/>}/>
       </Routes>
     </BrowserRouter>
   );

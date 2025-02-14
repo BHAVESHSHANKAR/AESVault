@@ -94,6 +94,9 @@ function Home() {
                             <Button type="primary" onClick={() => navigate('/signup')} size="large">
                                 Sign Up
                             </Button>
+                            <Button type="primary" onClick={()=> navigate('/aboutus')} size="large">
+                                About us
+                            </Button>
                         </Space>
                     </Col>
 
