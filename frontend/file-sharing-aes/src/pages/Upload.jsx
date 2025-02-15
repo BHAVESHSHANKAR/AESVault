@@ -41,12 +41,12 @@
 //         setLoading(true);
 
 //         try {
-//             // const response = await axios.post(`http://localhost:5000/api/auth/upload`, formData, {
-//                 const response = await axios.post(`https://aes-vault-apis.vercel.app/api/auth/upload`, formData, {
+//             const response = await axios.post(`https://aes-vault-apis.vercel.app/api/auth/upload`, formData, {
 //                 headers: { "Content-Type": "multipart/form-data" },
 //             });
 
-//             message.success("✅ " + response.data.message);
+//             message.success(`✅ File is securely sent to ${receiverId}.`);
+
 //             setFile(null);
 //             setReceiverId("");
 //             setSenderId("");
@@ -135,6 +135,11 @@
                                 
 //                                 <Text className="upload-subtitle">
 //                                     Upload encrypted files securely. Only the intended receiver can access them.
+//                                 </Text>
+
+//                                 {/* Success message after upload */}
+//                                 <Text className="upload-confirmation">
+//                                     🔒 Your file will be securely sent to the specified receiver. Ensure you enter the correct receiver ID.
 //                                 </Text>
 
 //                                 <Space direction="vertical" size="large" className="upload-form">
@@ -231,6 +236,8 @@ const Upload = () => {
     const [receiverId, setReceiverId] = useState("");
     const [senderId, setSenderId] = useState("");
     const [loading, setLoading] = useState(false);
+    const [uploadMessage, setUploadMessage] = useState("");  // ✅ Success message
+    const [errorMessage, setErrorMessage] = useState("");    // ❌ Unauthorized message
     const fileInputRef = useRef(null);
 
     const handleFileChange = (e) => {
@@ -238,13 +245,16 @@ const Upload = () => {
     };
 
     const handleUpload = async () => {
+        setUploadMessage("");  // Reset messages
+        setErrorMessage("");
+
         if (!file || !receiverId || !senderId) {
             message.error("⚠️ All fields are required!");
             return;
         }
 
         if (uniqueId !== senderId) {
-            message.error("❌ Unauthorized access! You can only enter your uniqueId because you are the Sender.");
+            setErrorMessage("❌ Unauthorized access! You can only enter your uniqueId because you are the Sender.");
             return;
         }
 
@@ -260,8 +270,10 @@ const Upload = () => {
                 headers: { "Content-Type": "multipart/form-data" },
             });
 
-            message.success(`✅ File is securely sent to ${receiverId}.`);
+            message.success("✅ " + response.data.message);
+            setUploadMessage(`✅ File successfully sent to ${receiverId}.`); // ✅ Display success message
 
+            // Reset fields
             setFile(null);
             setReceiverId("");
             setSenderId("");
@@ -352,11 +364,6 @@ const Upload = () => {
                                     Upload encrypted files securely. Only the intended receiver can access them.
                                 </Text>
 
-                                {/* Success message after upload */}
-                                <Text className="upload-confirmation">
-                                    🔒 Your file will be securely sent to the specified receiver. Ensure you enter the correct receiver ID.
-                                </Text>
-
                                 <Space direction="vertical" size="large" className="upload-form">
                                     <motion.div
                                         whileHover={{ scale: 1.02 }}
@@ -422,6 +429,10 @@ const Upload = () => {
                                             )}
                                         </Button>
                                     </motion.div>
+
+                                    {/* ✅ Display Success or Error Message Below Upload Button */}
+                                    {uploadMessage && <Text className="upload-success">{uploadMessage}</Text>}
+                                    {errorMessage && <Text className="upload-error">{errorMessage}</Text>}
                                 </Space>
                             </motion.div>
                         </Card>
