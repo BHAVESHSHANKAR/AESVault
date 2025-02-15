@@ -51,9 +51,7 @@ const Upload = () => {
             });
 
             message.success("✅ " + response.data.message);
-            // setUploadMessage(`✅ File successfully sent to ${receiverId}.`); // ✅ Display success message
-            setUploadMessage(`✅ File successfully sent to ${receiverId.username}.`); // ✅ Display success message
-
+            setUploadMessage(`✅ File successfully sent to receiver`); // ✅ Display success message
             // Reset fields
             setFile(null);
             setReceiverId("");
