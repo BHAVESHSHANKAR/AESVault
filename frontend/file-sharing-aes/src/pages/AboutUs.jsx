@@ -151,3 +151,4 @@ const AboutUs = () => {
 };
 
 export default AboutUs;
+//About us page
