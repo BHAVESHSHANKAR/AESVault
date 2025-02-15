@@ -37,10 +37,10 @@ const AboutUs = () => {
   ];
 
   const data = [
-    { key: "1", name: "KALLURU BHAVESH SHANKAR", linkedin: "https://linkedin.com/in/alice" },
+    { key: "1", name: "KALLURU BHAVESH SHANKAR", linkedin: "https://www.linkedin.com/in/kalluru-bhavesh-shankar-083b13264/" },
     { key: "2", name: "UMMADISETTY VENKATA TEJA", linkedin: "https://www.linkedin.com/in/uvenkatateja" },
-    { key: "3", name: "GANJIKUNTA RAGHAVENDRA", linkedin: "https://linkedin.com/in/charlie" },
-    { key: "4", name: "PATHAKOTA MEGHA SHYAM REDDY", linkedin: "https://linkedin.com/in/david" },
+    { key: "3", name: "GANJIKUNTA RAGHAVENDRA", linkedin: "https://www.linkedin.com/in/raghavendra-g-7b2a01264" },
+    { key: "4", name: "PATHAKOTA MEGHA SHYAM REDDY", linkedin: "https://www.linkedin.com/in/megha-shyam-reddy-pathakota-b0703b265/" },
   ];
 
   return (
