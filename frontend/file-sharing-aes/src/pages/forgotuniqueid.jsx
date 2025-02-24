@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Input, Button, Card, Typography, message as antMessage, Space, Row, Col } from "antd";
-import { MailOutlined, KeyOutlined, LockOutlined } from "@ant-design/icons";
+import { MailOutlined, KeyOutlined, LockOutlined, ArrowLeftOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 const { Title, Text, Paragraph } = Typography;
 
 const OTPVerification = () => {
+    const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [otp, setOtp] = useState("");
     const [message, setMessage] = useState("");
@@ -52,6 +54,20 @@ const OTPVerification = () => {
     return (
         <Row justify="center" align="middle" style={{ minHeight: '100vh', background: '#f0f2f5' }}>
             <Col xs={23} sm={20} md={16} lg={10} xl={8}>
+                <Button 
+                    icon={<ArrowLeftOutlined />}
+                    style={{ 
+                        marginBottom: '20px',
+                        borderRadius: '8px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '5px'
+                    }}
+                    onClick={() => navigate('/upload')}
+                >
+                    Back to Upload
+                </Button>
+                
                 <Card
                     className="hover-shadow flip-animation"
                     style={{
