@@ -212,7 +212,7 @@ const Upload = () => {
                                     {/* ✅ Display Success or Error Message Below Upload Button */}
                                     {uploadMessage && <Text className="upload-success">{uploadMessage}</Text>}
                                     {errorMessage && <Text className="upload-error">{errorMessage}</Text>}
-                                    <a onClick={()=>navigate("/forgot")}>Frogot Your UniqueId ?</a>
+                                    <a onClick={()=>navigate("/forgot")}>Forgot Your UniqueId ?</a>
                                 </Space>
                             </motion.div>
                         </Card>
