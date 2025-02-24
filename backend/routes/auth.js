@@ -7,9 +7,109 @@ const User = require("../models/users");
 const Files = require("../models/files");
 const cloudinary = require("cloudinary").v2;
 const streamifier = require("streamifier");
-
+const nodemailer=require('nodemailer');
 const router = express.Router();
+const OTP=require('../models/otp')
 const JWT_SECRET = process.env.JWT_SECRET;
+// router.post("/send-otp",async(req,res)=>{
+//     const {email}=req.body;
+//     const user=await User.findOne({email});
+//     if(!user){
+//         res.status(400).json({success:false,message:"user not found!"});
+//     }
+//     const otp=Math.floor(100000+Math.random()*900000).toString();
+//     otpStore[email]=otp;
+//     const transportEmail=nodemailer.createTransport({
+//         service:"gmail",
+//         auth:{
+//             user:process.env.Email_User,
+//             pass:process.env.Email_Password
+//         }
+//     })
+//     const mailOptions={
+//         from :process.env.Email_User,
+//         to:email,
+//         subject:"OTP Verification",
+//         text:`Your OTP is to get UniqueId is ${otp}`,
+//     };
+//     try{
+//         await transportEmail.sendMail(mailOptions);
+//         res.json({success:true,message:"OTP Sent Successfully"});
+//     }catch(error){
+//         res.status(500).json({success:false,message:"Failed to sent"});
+//     }
+// });
+router.post("/send-otp", async (req, res) => {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+        return res.status(400).json({ success: false, message: "User not found!" });
+    }
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // Store OTP in Database
+    await OTP.findOneAndUpdate(
+        { email },
+        { otp, createdAt: new Date() },
+        { upsert: true, new: true }
+    );
+
+    const transport = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: process.env.Email_User,
+            pass: process.env.Email_Password,
+        }
+    });
+
+    const mailOptions = {
+        from: process.env.Email_User,
+        to: email,
+        subject: "OTP Verification",
+        text: `Your OTP for verification is: ${otp}. It expires in 5 minutes.`,
+    };
+
+    try {
+        await transport.sendMail(mailOptions);
+        res.json({ success: true, message: "OTP sent successfully" });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Failed to send OTP", error: error.message });
+    }
+});
+// router.post("/verify-otp", async (req, res) => {
+//     const { email, otp } = req.body;
+  
+//     if (otpStore[email] !== otp) return res.status(400).json({ success: false, message: "Invalid OTP!" });
+  
+//     const user = await User.findOne({ email });
+//     if (!user) return res.status(404).json({ success: false, message: "User not found!" });
+  
+//     delete otpStore[email]; // Remove OTP after verification
+//     res.json({ success: true, uniqueId: user.uniqueId });
+//   });
+  
+//   module.exports = router;
+router.post("/verify-otp", async (req, res) => {
+    const { email, otp } = req.body;
+
+    const otpRecord = await OTP.findOne({ email });
+    if (!otpRecord || otpRecord.otp !== otp) {
+        return res.status(400).json({ success: false, message: "Invalid or expired OTP!" });
+    }
+
+    // Delete OTP after verification
+    await OTP.deleteOne({ email });
+
+    // Get user details
+    const user = await User.findOne({ email });
+    if (!user) {
+        return res.status(404).json({ success: false, message: "User not found!" });
+    }
+
+    res.json({ success: true, uniqueId: user.uniqueId, message: "OTP verified successfully" });
+});
 
 // 🔹 Cloudinary Configuration
 cloudinary.config({

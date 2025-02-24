@@ -6,6 +6,7 @@ import UserHome from './pages/userHome';
 import Upload from './pages/Upload';
 import Dashboard from './pages/Dashboard';
 import AboutUs from './pages/AboutUs';
+import Forgotuniqueid from "./pages/forgotuniqueid.jsx";
 function App() {
   return (
     <BrowserRouter>
@@ -17,6 +18,7 @@ function App() {
         <Route path="/upload" element={<Upload/>} />
         <Route path="/dashboard" element={<Dashboard/>} />
         <Route path="/aboutus" element={<AboutUs/>}/>
+        <Route path="/forgot"element={<Forgotuniqueid/>}/>
       </Routes>
     </BrowserRouter>
   );

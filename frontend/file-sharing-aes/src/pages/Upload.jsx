@@ -28,7 +28,7 @@ const Upload = () => {
         setUploadMessage("");  // Reset messages
         setErrorMessage("");
 
-        if (!file || !receiverId || !senderId) {
+        if (!file || !receiverId || !senderId) {    
             message.error("⚠️ All fields are required!");
             return;
         }
@@ -212,6 +212,7 @@ const Upload = () => {
                                     {/* ✅ Display Success or Error Message Below Upload Button */}
                                     {uploadMessage && <Text className="upload-success">{uploadMessage}</Text>}
                                     {errorMessage && <Text className="upload-error">{errorMessage}</Text>}
+                                    <a onClick={()=>navigate("/forgot")}>Frogot Your UniqueId ?</a>
                                 </Space>
                             </motion.div>
                         </Card>
