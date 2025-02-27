@@ -30,7 +30,7 @@ function SignUp() {
         setLoading(true);
         try {
             // const response = await axios.post(`http://localhost:5000/api/auth/signup`, formData);
-            const response = await axios.post(`https://aes-vault-apis.vercel.app/api/auth/signup`, formData);
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/signup`, formData);
             message.success(response.data.message);
             navigate('/login');
         } catch (error) {

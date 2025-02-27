@@ -14,7 +14,7 @@ const OTPVerification = () => {
 
     const sendOTP = async () => {
         try {
-            const response = await fetch("https://aes-vault-apis.vercel.app/api/auth/send-otp", {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/send-otp`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email })
@@ -34,7 +34,7 @@ const OTPVerification = () => {
 
     const verifyOTP = async () => {
         try {
-            const response = await fetch("https://aes-vault-apis.vercel.app/api/auth/verify-otp", {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/verify-otp`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, otp })

@@ -46,7 +46,7 @@ const Upload = () => {
         setLoading(true);
 
         try {
-            const response = await axios.post(`https://aes-vault-apis.vercel.app/api/auth/upload`, formData, {
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/upload`, formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
 
