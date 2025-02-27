@@ -12,6 +12,7 @@
   "dependencies": {
     "antd": "^5.24.0",
     "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
     "framer-motion": "^12.4.2",
     "lucide-react": "^0.475.0",
     "react": "^19.0.0",

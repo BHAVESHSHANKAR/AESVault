@@ -90,7 +90,7 @@ router.post("/send-otp", async (req, res) => {
 //     res.json({ success: true, uniqueId: user.uniqueId });
 //   });
   
-//   module.exports = router;
+
 router.post("/verify-otp", async (req, res) => {
     const { email, otp } = req.body;
 
@@ -118,11 +118,11 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-// 🔹 Multer Setup for Memory Storage
+
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-// 🔹 Encryption Setup
+
 const algorithm = "aes-256-cbc";
 const secretKey = Buffer.from(process.env.SECRET_KEY, "hex"); // 32 bytes
 const iv = Buffer.from(process.env.IV, "hex"); // 16 bytes
@@ -138,7 +138,7 @@ const decryptBuffer = (encryptedBuffer) => {
     return decrypted;
 };
 
-// 🔹 User Signup
+
 router.post("/signup", async (req, res) => {
     try {
         const { username, email, password, uniqueId } = req.body;
@@ -156,7 +156,7 @@ router.post("/signup", async (req, res) => {
     }
 });
 
-// 🔹 User Login
+
 router.post("/login", async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -335,6 +335,4 @@ router.delete("/delete/:fileId", async (req, res) => {
         res.status(500).json({ message: "Error deleting file.", error: error.message });
     }
 });
-
-
 module.exports = router;

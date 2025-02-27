@@ -5,7 +5,6 @@ import { Mail, Lock, LogIn, KeyRound, Eye, EyeOff, Loader, Home } from 'lucide-r
 import { Card, Input, Button, Typography, Space, message } from 'antd';
 import { motion } from 'framer-motion';
 import '../styles/Login.css';
-
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -19,7 +18,8 @@ const Login = () => {
         setLoading(true);
         try {
             // const response = await axios.post(`http://localhost:5000/api/auth/login`, { email, password });
-            const response = await axios.post(`https://aes-vault-apis.vercel.app/api/auth/login`, { email, password });
+            // const response = await axios.post(`https://aes-vault-apis.vercel.app/api/auth/login`, { email, password });
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`, { email, password });
             message.success(response.data.message);
             const { username, uniqueId } = response.data;
             navigate('/userhome', { state: { username, uniqueId } });
