@@ -354,7 +354,7 @@ router.post("/send-otp", async (req, res) => {
         from: process.env.Email_User,
         to: email,
         subject: "OTP Verification for File Sharing",
-        text: `Someone is trying to send you a file. Your OTP is: ${otp}. It expires in 5 minutes.`,
+        text: `Your : ${otp}. It expires in 5 minutes.`,
     };
 
     try {
