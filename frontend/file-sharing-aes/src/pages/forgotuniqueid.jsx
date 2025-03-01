@@ -63,9 +63,9 @@ const OTPVerification = () => {
                         alignItems: 'center',
                         gap: '5px'
                     }}
-                    onClick={() => navigate('/upload')}
+                    onClick={() => navigate('/login')}
                 >
-                    Back to Upload
+                    Back to login 
                 </Button>
                 
                 <Card
