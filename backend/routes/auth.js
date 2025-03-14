@@ -393,6 +393,61 @@ router.get("/friend-requests/:uniqueId", authenticateToken, async (req, res) => 
 });
 
 // Send Message
+// router.post("/messages/send", authenticateToken, async (req, res) => {
+//     const { senderId, receiverId, content } = req.body;
+//     try {
+//         const sender = await User.findOne({ uniqueId: senderId });
+//         const receiver = await User.findOne({ uniqueId: receiverId });
+//         if (!sender || !receiver) return res.status(404).json({ success: false, message: "User not found" });
+
+//         const friendship = await Friends.findOne({
+//             $or: [
+//                 { userId: sender._id, friendId: receiver._id, status: 'accepted' },
+//                 { userId: receiver._id, friendId: sender._id, status: 'accepted' },
+//             ],
+//         });
+//         if (!friendship) return res.status(403).json({ success: false, message: "Users are not friends" });
+
+//         const message = new Messages({ senderId, receiverId, content });
+//         await message.save();
+//         res.json({ success: true, message: "Message sent" });
+//     } catch (error) {
+//         console.error("Send message error:", error);
+//         res.status(500).json({ success: false, message: "Failed to send message", details: error.message });
+//     }
+// });
+
+// // Get Messages with a Friend
+// router.get("/messages/:friendId", authenticateToken, async (req, res) => {
+//     const { friendId } = req.params;
+//     const userId = req.user.uniqueId;
+//     try {
+//         const user = await User.findOne({ uniqueId: userId });
+//         const friend = await User.findOne({ uniqueId: friendId });
+//         if (!user || !friend) return res.status(404).json({ success: false, message: "User not found" });
+
+//         const friendship = await Friends.findOne({
+//             $or: [
+//                 { userId: user._id, friendId: friend._id, status: 'accepted' },
+//                 { userId: friend._id, friendId: user._id, status: 'accepted' },
+//             ],
+//         });
+//         if (!friendship) return res.status(403).json({ success: false, message: "Not friends with this user" });
+
+//         const messages = await Messages.find({
+//             $or: [
+//                 { senderId: userId, receiverId: friendId },
+//                 { senderId: friendId, receiverId: userId },
+//             ],
+//         }).sort({ timestamp: 1 });
+
+//         res.json({ success: true, messages });
+//     } catch (error) {
+//         console.error("Fetch messages error:", error);
+//         res.status(500).json({ success: false, message: "Failed to fetch messages", details: error.message });
+//     }
+// });
+// Send Message (Updated to hash content with bcrypt)
 router.post("/messages/send", authenticateToken, async (req, res) => {
     const { senderId, receiverId, content } = req.body;
     try {
@@ -408,16 +463,19 @@ router.post("/messages/send", authenticateToken, async (req, res) => {
         });
         if (!friendship) return res.status(403).json({ success: false, message: "Users are not friends" });
 
-        const message = new Messages({ senderId, receiverId, content });
+        // Hash the message content before saving
+        const hashedContent = await bcrypt.hash(content, 10); // 10 is the salt rounds
+        const message = new Messages({ senderId, receiverId, content: hashedContent });
         await message.save();
-        res.json({ success: true, message: "Message sent" });
+
+        res.json({ success: true, message: "Message sent", hashedContent }); // Return hashed content for confirmation
     } catch (error) {
         console.error("Send message error:", error);
         res.status(500).json({ success: false, message: "Failed to send message", details: error.message });
     }
 });
 
-// Get Messages with a Friend
+// Get Messages with a Friend (Updated to handle hashed content)
 router.get("/messages/:friendId", authenticateToken, async (req, res) => {
     const { friendId } = req.params;
     const userId = req.user.uniqueId;
@@ -441,6 +499,7 @@ router.get("/messages/:friendId", authenticateToken, async (req, res) => {
             ],
         }).sort({ timestamp: 1 });
 
+        // Messages are returned with hashed content
         res.json({ success: true, messages });
     } catch (error) {
         console.error("Fetch messages error:", error);

@@ -11,7 +11,7 @@ const MessageSchema = new mongoose.Schema({
     },
     content: {
         type: String,
-        required: true,
+        required: true, // Will store bcrypt-hashed content
     },
     timestamp: {
         type: Date,
