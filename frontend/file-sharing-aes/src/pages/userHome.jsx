@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { User, UploadCloud, LayoutDashboard, LogOut, ShieldCheck, FileText, KeyRound, BarChart2, ChevronDown } from 'lucide-react';
+import { User, UploadCloud, LayoutDashboard, LogOut, MessageSquare, ChevronDown } from 'lucide-react';
 import { Layout, Card, Button, Typography, Row, Col, Space, message, Dropdown, Avatar } from 'antd';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import '../styles/userHome.css';
 
 const { Title, Text } = Typography;
@@ -10,21 +10,61 @@ const { Header, Content } = Layout;
 
 const UserHome = () => {
     const location = useLocation();
-    const { username, uniqueId } = location.state || {};
     const navigate = useNavigate();
+    const { token: stateToken, username, uniqueId } = location.state || {
+        token: localStorage.getItem('token'),
+        username: localStorage.getItem('username'),
+        uniqueId: localStorage.getItem('uniqueId'),
+    };
+    const token = stateToken || localStorage.getItem('token'); // Ensure token is available
+
     const [user, setUser] = useState({ username: 'Guest' });
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    console.log('UserHome - Token:', token);
+    console.log('UserHome - Username:', username);
+    console.log('UserHome - UniqueId:', uniqueId);
 
     useEffect(() => {
         const loggedInUser = localStorage.getItem('user');
         if (loggedInUser) {
             setUser(JSON.parse(loggedInUser));
+        } else if (username) {
+            // Fallback to state username if 'user' isn't in localStorage
+            setUser({ username });
         }
-    }, []);
+    }, [username]);
 
-    const goToUpload = () => navigate('/upload', { state: { username, uniqueId } });
-    const goToDashboard = () => navigate('/dashboard', { state: { username, uniqueId } });
+    const goToUpload = () => {
+        if (!token || !uniqueId) {
+            message.error('Authentication required');
+            navigate('/login');
+            return;
+        }
+        navigate('/upload', { state: { token, username, uniqueId } });
+    };
+
+    const goToDashboard = () => {
+        if (!token || !uniqueId) {
+            message.error('Authentication required');
+            navigate('/login');
+            return;
+        }
+        navigate('/dashboard', { state: { token, username, uniqueId } });
+    };
+
+    const goToChat = () => {
+        if (!token || !uniqueId) {
+            message.error('Authentication required');
+            navigate('/login');
+            return;
+        }
+        navigate('/chats', { state: { token, username, uniqueId } });
+    };
+
     const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('username');
+        localStorage.removeItem('uniqueId');
         localStorage.removeItem('user');
         message.success('Logged out successfully');
         navigate('/');
@@ -36,7 +76,7 @@ const UserHome = () => {
             label: (
                 <div className="profile-menu-item">
                     <User size={16} />
-                    <span>Welcome, {username}</span>
+                    <span>Welcome, {username || 'Guest'}</span>
                 </div>
             ),
         },
@@ -117,7 +157,7 @@ const UserHome = () => {
                                             icon={<User size={20} />} 
                                             className="profile-avatar"
                                         />
-                                        <span className="username-display">{username}</span>
+                                        <span className="username-display">{username || 'Guest'}</span>
                                         <ChevronDown size={16} />
                                     </Space>
                                 </Button>
@@ -139,7 +179,7 @@ const UserHome = () => {
                                 >
                                     <User size={32} className="icon-title" />
                                 </motion.div>
-                                Welcome, {username} 👋
+                                Welcome, {username || 'Guest'} 👋
                             </Space>
                         </Title>
                         <Text className="welcome-text">
@@ -189,6 +229,28 @@ const UserHome = () => {
                                     </motion.div>
                                     <Title level={3}>View Dashboard</Title>
                                     <Text>Manage your encrypted files</Text>
+                                </Card>
+                            </motion.div>
+                        </Col>
+                        <Col xs={24} sm={12}>
+                            <motion.div 
+                                variants={itemVariants}
+                                whileHover="hover"
+                            >
+                                <Card 
+                                    hoverable 
+                                    className="action-card"
+                                    onClick={goToChat}
+                                    variants={cardHoverVariants}
+                                >
+                                    <motion.div
+                                        whileHover={{ scale: 1.1 }}
+                                        transition={{ type: "spring", stiffness: 300 }}
+                                    >
+                                        <MessageSquare size={40} className="card-icon" />
+                                    </motion.div>
+                                    <Title level={3}>Connect</Title>
+                                    <Text>Chat with friends</Text>
                                 </Card>
                             </motion.div>
                         </Col>

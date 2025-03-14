@@ -13,8 +13,6 @@ app.use(cors({
     methods: ["GET", "POST", "PUT", "DELETE"], // ✅ Allow required methods
     credentials: true // ✅ Allow cookies & authentication headers
 }));
-
-
 app.use("/api/auth", authRoutes);
 
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })

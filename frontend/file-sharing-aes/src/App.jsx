@@ -7,6 +7,7 @@ import Upload from './pages/Upload';
 import Dashboard from './pages/Dashboard';
 import AboutUs from './pages/AboutUs';
 import Forgotuniqueid from "./pages/forgotuniqueid.jsx";
+import Chats from './pages/Chats.jsx';
 function App() {
   return (
     <BrowserRouter>
@@ -19,6 +20,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard/>} />
         <Route path="/aboutus" element={<AboutUs/>}/>
         <Route path="/forgot"element={<Forgotuniqueid/>}/>
+        <Route path="/chats" element={<Chats/>}/>
       </Routes>
     </BrowserRouter>
   );
