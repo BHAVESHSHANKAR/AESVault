@@ -447,7 +447,7 @@ router.get("/friend-requests/:uniqueId", authenticateToken, async (req, res) => 
 //         res.status(500).json({ success: false, message: "Failed to fetch messages", details: error.message });
 //     }
 // });
-// Send Message (Updated to hash content with bcrypt)
+// Send Message (Revert to plaintext content)
 router.post("/messages/send", authenticateToken, async (req, res) => {
     const { senderId, receiverId, content } = req.body;
     try {
@@ -463,19 +463,17 @@ router.post("/messages/send", authenticateToken, async (req, res) => {
         });
         if (!friendship) return res.status(403).json({ success: false, message: "Users are not friends" });
 
-        // Hash the message content before saving
-        const hashedContent = await bcrypt.hash(content, 10); // 10 is the salt rounds
-        const message = new Messages({ senderId, receiverId, content: hashedContent });
+        const message = new Messages({ senderId, receiverId, content }); // Store content as plaintext
         await message.save();
 
-        res.json({ success: true, message: "Message sent", hashedContent }); // Return hashed content for confirmation
+        res.json({ success: true, message: "Message sent" });
     } catch (error) {
         console.error("Send message error:", error);
         res.status(500).json({ success: false, message: "Failed to send message", details: error.message });
     }
 });
 
-// Get Messages with a Friend (Updated to handle hashed content)
+// Get Messages with a Friend (No change needed, already returns content as-is)
 router.get("/messages/:friendId", authenticateToken, async (req, res) => {
     const { friendId } = req.params;
     const userId = req.user.uniqueId;
@@ -499,7 +497,6 @@ router.get("/messages/:friendId", authenticateToken, async (req, res) => {
             ],
         }).sort({ timestamp: 1 });
 
-        // Messages are returned with hashed content
         res.json({ success: true, messages });
     } catch (error) {
         console.error("Fetch messages error:", error);
