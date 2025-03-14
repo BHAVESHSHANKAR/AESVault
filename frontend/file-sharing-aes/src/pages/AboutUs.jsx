@@ -38,9 +38,9 @@ const AboutUs = () => {
 
   const data = [
     { key: "1", name: "KALLURU BHAVESH SHANKAR", linkedin: "https://www.linkedin.com/in/kalluru-bhavesh-shankar-083b13264/" },
-    { key: "2", name: "UMMADISETTY VENKATA TEJA", linkedin: "https://www.linkedin.com/in/uvenkatateja" },
-    { key: "3", name: "GANJIKUNTA RAGHAVENDRA", linkedin: "https://www.linkedin.com/in/raghavendra-g-7b2a01264" },
-    { key: "4", name: "PATHAKOTA MEGHA SHYAM REDDY", linkedin: "https://www.linkedin.com/in/megha-shyam-reddy-pathakota-b0703b265/" },
+    { key: "2", name: "PATHAKOTA MEGHA SHYAM REDDY", linkedin: "https://www.linkedin.com/in/megha-shyam-reddy-pathakota-b0703b265/" },
+    { key: "3", name: "SUNKESULA IMRAN", linkedin: "https://www.linkedin.com/in/sunkesula-imran-2a63282b6?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" },
+    { key: "4", name: "CHIMATA GOPI KRISHNA", linkedin: "https://www.linkedin.com/in/chimata-gopi-krishna-023650268/" },
   ];
 
   return (
@@ -151,4 +151,3 @@ const AboutUs = () => {
 };
 
 export default AboutUs;
-//About us page

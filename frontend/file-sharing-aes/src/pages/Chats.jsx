@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Layout, Card, Input, Button, Typography, Space, List, Avatar, message, Spin } from 'antd';
 import { UserOutlined, SendOutlined, SearchOutlined, CheckOutlined, ArrowLeftOutlined } from '@ant-design/icons';
-
 const { Header, Content } = Layout;
 const { Title, Text } = Typography;
 
