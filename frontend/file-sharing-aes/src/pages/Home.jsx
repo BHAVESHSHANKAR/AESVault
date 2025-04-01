@@ -94,9 +94,9 @@ function Home() {
                             <Button type="primary" onClick={() => navigate('/signup')} size="large">
                                 Sign Up
                             </Button>
-                            <Button type="primary" onClick={() => window.open('/aboutus', '_blank')}  size="large">
+                            {/* <Button type="primary" onClick={() => window.open('/aboutus', '_blank')}  size="large">
                                 About us
-                            </Button>
+                            </Button> */}
                             
                         </Space>
                     </Col>
@@ -142,7 +142,7 @@ function Home() {
                     >
                         Sign Up
                     </Button>
-                    <Button 
+                    {/* <Button 
                         type="primary" 
                         onClick={() => {
                             // navigate('/aboutus');
@@ -152,7 +152,7 @@ function Home() {
                         block
                     >
                         About us
-                    </Button>
+                    </Button> */}
                     
                 </Space>
             </Drawer>
