@@ -13,6 +13,7 @@ const streamifier = require("streamifier");
 const nodemailer = require("nodemailer");
 const router = express.Router();
 
+
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
 
 cloudinary.config({
